@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Autor: {{ autor.apenom }}</h1>
+    <br> 
+    <ul>
+        <ul><img src="{{ autor.imagen.url }}" alt="" width=200 heigth=100></ul> 
+        <br>
+        <li>Fecha de Nacimiento: {{ autor.fechaNac }}</li>
+        {% if autor.fechaDeceso %}
+            <li>Fecha de Deceso: {{ autor.fechaDeceso }}</li>
+        {% endif %}
+    </ul>
+
+    <br>
+    <a href="javascript: history.go(-1)">Volver pagina anterior</a>  
+    <br>
+{% endblock %}

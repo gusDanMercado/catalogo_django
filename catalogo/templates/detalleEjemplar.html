@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Ejemplar:</h1>
+    <br>
+    <ul>
+        <li>ID: {{ ejemplar.uniqueId }}</li>
+        <li>ISBN: {{ ejemplar.ISBN }}</li>
+        <li> 
+            {% if ejemplar.fechaDevolucion %}
+                Fecha de devolucion: {{ ejemplar.fechaDevolucion }}
+            {% else %}
+                Fecha de devolucion: <strong>Este ejemplar aun no esta disponible...</strong>
+            {% endif %}
+        </li>
+        <li>Estado del Prestamo: {{ ejemplar.get_estado_display }}</li>
+        <li>Libro: <a href="{% url 'detalleLibro' ejemplar.libro.id %}">{{ ejemplar.libro }}</a></li>   <!-- {{ ejemplar.libro }} -->
+    </ul> 
+    <br>
+    <a href="javascript: history.go(-1)">Volver pagina anterior</a>  <!-- "{% url 'listaGeneros' %}" -->
+    <br>
+{% endblock %}

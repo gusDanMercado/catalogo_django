@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Titulo: {{ libro.titulo }}</h1>
+    <br>
+    <ul><img src="{{ libro.imagen.url }}" alt="" width=200 heigth=100></ul>
+    <br>
+    <p><strong>Autor: </strong><a href="{% url 'detalleAutor' libro.autor.id %}">{{ libro.autor }}</a></p>  <!--   detalleAutor   actualizarAutor -->
+    <p><strong>Resumen: </strong>{{ libro.resumen }}</p>
+    <!-- <p><strong>ISBN: </strong>{{ libro.ISBN }}</p> -->
+    <p><strong>Idioma: </strong>{{ libro.idioma }}</p>
+    <!-- <p><strong>Genero: </strong>{{ libro.muestra_genero }}</p> arreglar que pasa si no tiene genero -->
+    <p><strong>Genero/s: </strong>
+        <ul>
+        {% if libro.muestra_genero %}
+            <!-- <li><p>{{ libro.muestra_genero }}</p></li> -->
+            {% for genero in libro.genero.all %}
+                <li><p>{{ genero }}</p></li>
+            {% endfor %}
+        {% else %}
+            <li><strong>Genero del libro no cargado!!!</strong></li>
+        {% endif %}
+        </ul>
+    </p>
+    <p>
+        <strong>Ejemplares: </strong>
+
+        {% if ejemplares %}
+            <ul>
+                {% for ejemplar in ejemplares %}
+                    <li>
+                        Ejemplar:
+                        <ul>
+                            <!-- <li>Id: {{ ejemplar.uniqueId }}</li> -->
+                            <li>ISBN: {{ ejemplar.ISBN }}</li>
+
+                            {% if ejemplar.fechaDevolucion %}
+                                <li>Fecha de Devolución: {{ ejemplar.fechaDevolucion }}</li>
+                            
+                            {% else %}
+                                <li>Fecha de Devolución: Este ejemplar todavia no esta disponible!!! </li>
+                            {% endif %}
+
+                            <li>Estado: {{ ejemplar.get_estado_display }}</li>
+                        </ul>                    
+                    </li>
+                {% endfor %}            
+            </ul>
+        {% else %}
+            <ul><p><strong>Ooops!!!, No tenemos ejemplares de este libro en este catalogo.</strong></p></ul>
+        {% endif %}
+    </p>
+
+    <!--     <br>
+    <a href="{% url 'listaLibros' %}">Volver a Libros</a> -->
+
+    <br>
+    <a href="javascript: history.go(-1)">Volver pagina anterior</a> 
+    <br>
+{% endblock %}

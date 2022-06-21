@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <h1>DW2022: Mapas con <em>Leaflet</em></h1>
+    {{ markers|json_script:"markers-data" }}
+    <div id="map" width="100%" style='height:500px'></div>
+    <script src="{% static 'js/map.js' %}"></script>
+{% endblock %}

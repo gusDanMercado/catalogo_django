@@ -1,0 +1,40 @@
+{% extends "base.html" %}  <!-- extiendo del archivo base.html -->
+
+{% block content %}
+    <h1>DW2022: Catalogo</h1>
+
+    <p>Bienvenidos a <em>Catalogo</em>, una aplicación web desarrollada en Django</p>
+
+    <h2>Contenido Dinámico</h2>
+
+    <p>Nuestro catalogo se forma de: </p>
+
+    <ul>
+        <li><strong>Autores: </strong>{{ nroAutores }}</li>
+        <li><strong>Libros: </strong>{{ nroLibros }}</li>
+        <li><strong>Ejemplares: </strong>{{ nroEjemplares }}</li>
+        <li><strong>Disponibles: </strong>{{ nroDisponibles }}</li>
+    </ul>
+
+    <!--
+    <table>
+        <tr>
+            <td><strong>Autores: </strong></td>
+            <td>{{ nroAutores }}</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Libros: </strong></td>
+            <td>{{ nroLibros }}</td>
+        </tr>
+        <tr>
+            <td><strong>Ejemplares: </strong></td>
+            <td>{{ nroEjemplares }}</td>
+        </tr>
+        <tr>
+            <td><strong>Disponibles: </strong></td>
+            <td>{{ nroDisponibles }}</td>
+        </tr>
+    </table>
+    -->
+{% endblock %}

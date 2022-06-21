@@ -1,0 +1,58 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+
+<div class="contenedor">
+    <h1>Generos</h1>
+    <br>
+    <a class="nuevoRegistro" href="{% url 'nuevoGenero' %}"><img src="/media/img/agregar.png" width="50" alt="icono" title="Nuevo"></a>  <!-- Nuevo -->
+    <br><br>
+
+    {% if generos %}
+
+        <table class="table table-striped table-hover">
+            
+            <tr>
+                <th colspan="2">Nombres</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            {% for genero in generos %}
+            
+                <tr>
+
+                    <td>
+                        {{ genero.nombre }}
+                        <!-- <a href="{% url 'detalleGenero' genero.id %}">{{ genero.nombre }}</a> -->                        
+                    </td> 
+                    
+
+                    <td class="col">
+                        <a href="{% url 'detalleGenero' genero.id %}"><img src="/media/img/ver.png" width="40" alt="icono" title="ver"></a>  <!-- class="btn btn-sm btn-info" Editar -->
+                    </td>
+
+                    <td class="col">
+                        <a href="{% url 'actualizarGenero' genero.id %}"><img src="/media/img/actualizar.png" width="40" alt="icono" title="actualizar"></a>  <!-- class="btn btn-sm btn-info" Editar -->
+                    </td>
+
+                    <td class="col">
+                        <a href="" data-toggle="modal" data-target="#exampleModal{{ genero.id }}"><img src="/media/img/eliminar.png" width="35" alt="icono" title="eliminar"></a>  
+                    </td>
+
+                    {% include "genero_modal.html" %}  
+
+                </tr> 
+
+            {% endfor %}
+            
+        </table>
+
+    {% else %}
+        <p><strong>Ooops!!!, No tenemos generos en este catalogo.</strong></p>
+    {% endif %}
+
+    <script src="extensions/editable/bootstrap-table-editable.js"></script>    
+</div>
+<a href="{% url 'index' %}">Volver a Home</a><br><br>
+{% endblock %}

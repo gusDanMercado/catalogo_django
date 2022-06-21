@@ -1,0 +1,21 @@
+{% extends "base.html" %}  <!-- extiendo del archivo base.html -->
+
+{% block content %}
+    <h1>Autores</h1>
+    <br>
+    <a href="{% url 'nuevoAutor' %}">Nuevo</a>
+    <br><br>
+    {% for autor in autores %}
+        <ul>
+            <li>
+                <a href="{% url 'actualizarAutor' autor.id %}">{{ autor }}</a>  <!-- detalleAutor -->
+                {% if autor.fechaDeceso %}
+                    ({{ autor.fechaDeceso }})
+                {% endif %}
+            </li>
+        </ul>
+    {% endfor %}
+    <br>
+    <a href="{% url 'index' %}">Volver al Home</a>
+
+{% endblock %}

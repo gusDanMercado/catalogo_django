@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Genero:</h1>
+    <br>
+    <ul>
+        <li>Nombre: {{ genero.nombre }}</li>
+    </ul> 
+    <br>
+    <a href="javascript: history.go(-1)">Volver pagina anterior</a>  <!-- "{% url 'listaGeneros' %}" -->
+    <br>
+{% endblock %}

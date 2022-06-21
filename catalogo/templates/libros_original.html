@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Libros</h1>
+    <br>
+    <a href="#">Nuevo</a>
+    <br><br>
+    
+    {% if libros %}
+        {% for libro in libros %}
+            <ul>
+                <li> 
+                    <a href="{% url 'detalleLibro' libro.id %}">{{ libro }}</a>
+                    <ul>
+                        <br>
+                        <li><img src="{{ libro.imagen.url }}" alt="" width=200 heigth=100></li> <br>
+                        <li>
+                            Genero/s: 
+                            <ul>
+                                {% for genero in libro.genero.all %}
+                                    <li>{{ genero }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    
+                        <li>Idioma: {{ libro.idioma }}</li>
+                        <li>Resumen: {{ libro.resumen }}</li>
+                    </ul>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>Ooops!!!, No tenemos libros es el catalogo.</p>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'index' %}">Volver al Home</a>
+{% endblock %}

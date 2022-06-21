@@ -1,0 +1,57 @@
+/*
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+    /*background-color: lightblue;
+    letter-spacing: 0.1cm; espacio entre letras
+    margin-right: 150px;*
+}*/
+/*
+.container-fluid {
+    /*background-color: blue;*
+    padding-left: 25px;
+    padding-top: 15px;
+    padding-bottom: 25px;
+    background-color: aqua;
+}*/
+.sidebar-nav {
+    margin-top: 40px;
+}
+.container-fluid {
+    margin-top: 40px;
+}
+
+/*
+.footer {
+    /*margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;*/
+    /*position: absolute;
+    left: 30%;
+    text-align: center;
+}
+*/
+
+.contenedor {
+    /*border: solid red 1px;*/
+    width: 1000px; /*ancho*/
+    height: 400px;  /*altura*/
+}
+
+
+table {
+    table-layout: fixed;
+    width: 250px;
+}
+
+
+.col {
+    width: 100px;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.nuevoRegistro {
+    margin-left: 850px;
+}

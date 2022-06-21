@@ -1,0 +1,17 @@
+{% extends "base.html" %}   <!-- extiendo del archivo base.html -->
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <h2>Nuevo Idioma</h2>
+    <br>
+    <form method="post" class="post-form" action="">{% csrf_token %}
+        <!-- {{ formulario.as_p }} el anterior muestra como parrafo -->
+        {{ formulario | crispy }}
+        <button type="submit" class="save btn btn-primary">Guardar</button>
+    </form>
+
+    <br><br>
+    <a href="{% url 'listaIdiomas' %}">Volver a Idiomas</a>
+    <br>
+{% endblock %}
