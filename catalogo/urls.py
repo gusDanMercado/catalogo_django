@@ -39,6 +39,13 @@ urlpatterns = [
     path('graficos', views.chartData, name='graficos'),
     path('map', views.POIsMapView.as_view(), name='mapa'),
 
+    path('puntos', views.listaPuntos.as_view(), name='listaPuntos'),
+    path('puntos/detalle/<pk>', views.detallePunto.as_view(), name='detallePunto'),
+    
+    ##path('puntos/lat/long', views.listaPuntos.as_view(),name='showroute'),
+    #path('puntos', views.listaPuntos.as_view(), name='showmap'),
+    #path('puntos/<str:lat>/<str:long>', views.listaPuntos_2.as_view(), name='showroute'),
+    
     #path('idiomas', views.listaIdiomas.as_view(), name='listaIdiomas'), ##para la pagina de idiomas   
     #(lo hacemos asi porque usamos la clase ListView para manejar idiomas en views.py)
     
