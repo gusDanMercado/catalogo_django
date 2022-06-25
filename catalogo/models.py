@@ -132,3 +132,6 @@ class POI(models.Model):
     nombre = models.CharField(max_length=255)
     lng = models.FloatField()
     lat = models.FloatField()
+
+    def __str__(self):
+        return '%s'%(self.nombre)
