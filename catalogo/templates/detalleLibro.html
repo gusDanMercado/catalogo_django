@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Titulo: {{ libro.titulo }}</h1>
     <br>
-    <ul><img src="{{ libro.imagen.url }}" alt="" width=200 heigth=100></ul>
+    <ul><img src="{{ libro.imagen.url }}" alt="" width=200 heigth=100></ul>  <!-- .url -->
     <br>
     <p><strong>Autor: </strong><a href="{% url 'detalleAutor' libro.autor.id %}">{{ libro.autor }}</a></p>  <!--   detalleAutor   actualizarAutor -->
     <p><strong>Resumen: </strong>{{ libro.resumen }}</p>

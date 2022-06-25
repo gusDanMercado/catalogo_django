@@ -31,35 +31,8 @@ class EjemplarAdmin(admin.ModelAdmin):
     #list_display = ('libro', 'ISBN', 'estado', 'fechaDevolucion')
     list_filter = (('ISBN', 'estado','fechaDevolucion'))  #son los filtros que va a mostrar al lado derecho del sitio de administracion de Django
 
-##class POIAdmin(admin.ModelAdmin):
-##    list_display = ('nombre', 'lng', 'lat')
-
 class POIAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'longitude', 'latitude')
-
-## Para trabajar con mapas desde google maps
-""" 
-class POIAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'latitude', 'longitude')
-    search_fields = (('nombre', ))
-    
-    fieldsets = (
-        (None, {
-            'fields': ('nombre', 'latitude', 'longitude',)
-        }),
-    )
-
-    class Media:
-        if (hasattr(settings, 'GOOGLE_MAPS_API_KEY') and settings.GOOGLE_MAPS_API_KEY):
-            css = {
-                'all': ('css/admin/location_picker.css',),
-            }
-
-            js = (
-                'https://maps.googleapis.com/maps/api/js?key={}'.format(settings.GOOGLE_MAPS_API_KEY), 
-                'js/admin/location_picker.js',
-            ) 
-"""
+    list_display = ('nombre','lng', 'lat')  
 
 admin.site.register(Autor, AutorAdmin)
 admin.site.register(Genero, GeneroAdmin)

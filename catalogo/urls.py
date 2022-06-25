@@ -38,9 +38,6 @@ urlpatterns = [
 
     path('graficos', views.chartData, name='graficos'),
     path('map', views.POIsMapView.as_view(), name='mapa'),
-
-    path('puntos', views.listaPuntos.as_view(), name='listaPuntos'),
-    path('puntos/detalle/<pk>', views.detallePunto.as_view(), name='detallePunto'),
     
     ##path('puntos/lat/long', views.listaPuntos.as_view(),name='showroute'),
     #path('puntos', views.listaPuntos.as_view(), name='showmap'),

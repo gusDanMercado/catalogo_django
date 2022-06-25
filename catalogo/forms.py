@@ -37,8 +37,11 @@ class AutorForm(forms.ModelForm):
         fechaDeceso = self.cleaned_data['fechaDeceso']
         apenom = self.cleaned_data['apenom']
 
-        if fechaNac!='' and fechaDeceso!='':
-            if fechaDeceso < fechaNac:
+        #print(fechaNac)
+        #print(fechaDeceso)
+
+        if (fechaDeceso!=None and fechaNac!=None):
+            if fechaDeceso<fechaNac:
                 self.errors['fechaDeceso'] = self.error_class(['La fecha de deceso debe ser mayor a la de nacimiento'])
         
         if len(apenom)<3:

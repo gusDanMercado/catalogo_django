@@ -14,11 +14,11 @@ from django.core.validators import RegexValidator
 
 class Autor(models.Model):
     apenom = models.CharField("Apellido y Nombre", max_length=50)  #"Apellido y Nombre" --> es lo que aparece como titulo de la columna cuando se muestra
-    fechaNac = models.DateField("Fecha de Nacimiento" ,null=True, blank=True)
+    fechaNac = models.DateField("Fecha de Nacimiento", null=True)  #,null=True, blank=True
     fechaDeceso = models.DateField("Fecha de Deceso", null=True, blank=True)
     ##null=True --> da la opcion de que no se ingrese ninguna fecha (va a poner null)
     ##blank=True --> permite que este campo se quede en blanco para tus formularios
-    imagen = models.ImageField(upload_to='autores', null=True, default='autores/noposee_foto.png') #, blank=True
+    imagen = models.ImageField(upload_to='autores', null=True, default='img/noposee_foto.png') #, blank=True
 
     def __str__(self):
         return '%s'%(self.apenom)  #esta clase me va a retornar el apellido y el nombre
@@ -68,8 +68,8 @@ class Libro(models.Model):
     #null=True --> da la opcion de que no se ingrese ningun genero (va a poner null)
 
     idioma = models.ForeignKey(Idioma, on_delete=models.SET_NULL, null=True) #aqui no hace falta el el vector de idioma ya que django lo hace automaticamente
-
-    imagen= models.ImageField(upload_to='portada', null=True, default='portada/noposee_portada.png')  
+    
+    imagen= models.ImageField(upload_to='aportadas', null=True, default='img/eliminar.png') ##  
     ##upload_to='img' --> me indica que la imagen se va a guardar en la carpeta img, tambien me crea esta carpeta
 
     def __str__(self):
@@ -83,8 +83,6 @@ class Libro(models.Model):
         return ', '.join([genero.nombre for genero in self.genero.all()[:3]])
     
     muestra_genero.short_description = 'Genero/s' 
-
-
 
 class Ejemplar(models.Model):
     uniqueId = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID unico para este libro particular en toda la biblioteca...")
@@ -129,13 +127,9 @@ class Ejemplar(models.Model):
 
 ## Definimos un modelo para mostrar el Mapa:
 class POI(models.Model):
-    ##nombre = models.CharField(max_length=255)
-    ##lng = models.FloatField()
-    ##lat = models.FloatField()
-
     nombre = models.CharField(max_length=255)
-    lng = models.FloatField()
-    lat = models.FloatField()
+    lng = models.FloatField(null=True, blank=True)
+    lat = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return '%s'%(self.nombre)
