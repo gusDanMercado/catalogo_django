@@ -3,12 +3,12 @@
 {% block content %}
 
 <div class="contenedor">
-    <h1>Autores</h1>
+    <h1>Puntos</h1>
     <br>
-    <a class="nuevoRegistro" href="{% url 'nuevoAutor' %}"><img src="/media/img/agregar.png" width="50" alt="icono" title="Nuevo"></a>  <!-- Nuevo -->
+    <a class="nuevoRegistro" href="#"><img src="/media/img/agregar.png" width="50" alt="icono" title="Nuevo"></a>  <!-- Nuevo -->
     <br><br>
 
-    {% if autores %}
+    {% if puntos %}
 
         <table class="table table-striped table-hover">
             
@@ -18,27 +18,27 @@
                 <th></th>
             </tr>
 
-            {% for autor in autores %}
+            {% for punto in puntos %}
             
                 <tr>
 
                     <td>
-                        {{ autor.apenom }}
+                        {{ punto.nombre }}
                     </td> 
-
+                    
                     <td class="col">
-                        <a href="{% url 'detalleAutor' autor.id %}"><img src="/media/img/ver.png" width="40" alt="icono" title="ver"></a>  <!-- class="btn btn-sm btn-info" Editar -->
+                        <a href="{% url 'detallePunto' punto.id %}"><img src="/media/img/ver.png" width="40" alt="icono" title="ver"></a>  <!-- class="btn btn-sm btn-info" Editar -->
                     </td>
 
                     <td class="col">
-                        <a href="{% url 'actualizarAutor' autor.id %}"><img src="/media/img/actualizar.png" width="40" alt="icono" title="actualizar"></a>  <!-- class="btn btn-sm btn-info" Editar -->
+                        <a href="###"><img src="/media/img/actualizar.png" width="40" alt="icono" title="actualizar"></a>  <!-- class="btn btn-sm btn-info" Editar -->
                     </td>
 
                     <td class="col">
-                        <a href="" data-toggle="modal" data-target="#exampleModal{{ autor.id }}"><img src="/media/img/eliminar.png" width="35" alt="icono" title="eliminar"></a>  
+                        <a href="" data-toggle="modal" data-target="#exampleModal{{ punto.id }}"><img src="/media/img/eliminar.png" width="35" alt="icono" title="eliminar"></a>  
                     </td>
 
-                    {% include "autor_modal.html" %}
+
 
                 </tr> 
 

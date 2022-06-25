@@ -1,8 +1,12 @@
+from dataclasses import fields
 from django.contrib import admin
 from django.utils.html import format_html
 
 # Register your models here.
 from catalogo.models import Autor, Genero, Idioma, Libro, Ejemplar, POI
+
+## para trabajar con mapas:
+##from django.conf import settings
 
 class AutorAdmin(admin.ModelAdmin):
     list_display = ('apenom', 'fechaNac', 'imagen')   #son todas las columnas que va a mostrar en el sitio de administracion de Django
@@ -27,9 +31,35 @@ class EjemplarAdmin(admin.ModelAdmin):
     #list_display = ('libro', 'ISBN', 'estado', 'fechaDevolucion')
     list_filter = (('ISBN', 'estado','fechaDevolucion'))  #son los filtros que va a mostrar al lado derecho del sitio de administracion de Django
 
+##class POIAdmin(admin.ModelAdmin):
+##    list_display = ('nombre', 'lng', 'lat')
 
 class POIAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'lng', 'lat')
+    list_display = ('nombre', 'longitude', 'latitude')
+
+## Para trabajar con mapas desde google maps
+""" 
+class POIAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'latitude', 'longitude')
+    search_fields = (('nombre', ))
+    
+    fieldsets = (
+        (None, {
+            'fields': ('nombre', 'latitude', 'longitude',)
+        }),
+    )
+
+    class Media:
+        if (hasattr(settings, 'GOOGLE_MAPS_API_KEY') and settings.GOOGLE_MAPS_API_KEY):
+            css = {
+                'all': ('css/admin/location_picker.css',),
+            }
+
+            js = (
+                'https://maps.googleapis.com/maps/api/js?key={}'.format(settings.GOOGLE_MAPS_API_KEY), 
+                'js/admin/location_picker.js',
+            ) 
+"""
 
 admin.site.register(Autor, AutorAdmin)
 admin.site.register(Genero, GeneroAdmin)
