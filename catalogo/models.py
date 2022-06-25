@@ -134,16 +134,8 @@ class POI(models.Model):
     ##lat = models.FloatField()
 
     nombre = models.CharField(max_length=255)
-<<<<<<< HEAD
     lng = models.FloatField()
     lat = models.FloatField()
 
     def __str__(self):
         return '%s'%(self.nombre)
-=======
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-
-    def __str__(self):
-        return '%s, %s, %s'%(self.nombre, self.latitude, self.longitude)
->>>>>>> 872babe8a8c8ff004f285dfb394442a090577ff9
