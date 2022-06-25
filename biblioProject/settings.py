@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-i0vvy80_r)32d_ko(te=b$2x#m1dy*irzm50$(n2r$9wj0v_-b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1']  ##, 'localhost'
 
 
 # Application definition
@@ -143,3 +143,6 @@ MEDIA_ROOT --> es la ruta absoluta, esta ruta se utiliza para recuperar archivos
     BASE_DIR --> apunta a la jerarquia superior del proyecto (la raiz), es decir, mi sitio. Si queremos usarlo tendremos que 
     usar el metodo "os" proporcionado por python.
 """
+
+#GOOGLE_MAPS_API_KEY = 'your-key-goes-here'  ## para trabajar con Google Maps
+#### Para trabajar con esto hay que crearce credenciales y todo en google Maps y es todo un kilombo (No vale la pena hacerlo, hay otras formas de hacerlo usando JS)

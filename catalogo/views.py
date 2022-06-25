@@ -525,11 +525,110 @@ class POIsMapView(TemplateView):
             json_dict={}
             json_dict['type'] = 'Feature'
             json_dict['properties'] = dict(name=poi.nombre)
-            json_dict['geometry'] = dict(type='Point', coordinates=list([poi.lng,poi.lat]))
+            json_dict['geometry'] = dict(type='Point', coordinates=list([poi.longitude,poi.latitude]))
             lista.append(json_dict)
         
         context["markers"]= lista
 
         return context
  
+######################################################################################################################
+
+
+############################################ PUNTOS ##################################################################
+## Para ver todos los puntos:
+class listaPuntos(generic.ListView):
+    model = POI
+    context_object_name = 'puntos'
+    paginate_by = 2
+    template_name = 'puntos.html'
+
+## Para ver un punto:
+class detallePunto(generic.DetailView):
+    model = POI
+    template_name = 'detallePunto.html'
+
+    def punto_detalle_view(request, pk):
+        try:
+            punto = POI.objects.get(pk = pk)
+        except POI.DoesNotExist:
+            raise Http404("Ooops! El Punto no existe")
+
+        context = {
+            'punto' : punto
+        }
+
+        return render(request, 'detallePunto.html', context)
+
+
+class listaPuntos_3(generic.ListView):
+    model = POI
+    context_object_name = 'punto'
+    paginate_by = 2
+    template_name = 'showmap.html' ##'puntos.html'
+
+
+class listaPuntos_2(generic.ListView):
+    model = POI
+    context_object_name = 'puntos'
+    #paginate_by = 2
+    template_name = 'showroute.html' ##'puntos.html'
+
+
+
+
+"""
+## Para crear un nuevo punto:
+def nuevoPunto(request):
+    if request.method == "POST":
+        formulario = AutorForm(request.POST, request.FILES)
+
+        if formulario.is_valid():
+            autor = formulario.save(commit=False)
+
+            autor.apenom = formulario.cleaned_data['apenom']
+            autor.fechaNac = formulario.cleaned_data['fechaNac']
+            autor.fechaDeceso = formulario.cleaned_data['fechaDeceso']
+            autor.imagen = formulario.cleaned_data['imagen']
+
+            autor.save()
+            return redirect('listaAutores')
+    else:
+        formulario = AutorForm()
+    
+    return render(request, 'nuevoAutor.html', { 'formulario' : formulario })
+
+## Para actualizar un autor:
+def actualizarAutor(request, pk):
+    autor = get_object_or_404(Autor, pk = pk)
+
+    if request.method == "POST":
+        formulario = AutorForm(request.POST, request.FILES, instance=autor) 
+
+        if formulario.is_valid():
+            autor.apenom = formulario.cleaned_data['apenom']
+            autor.fechaNac = formulario.cleaned_data['fechaNac']
+            autor.fechaDeceso = formulario.cleaned_data['fechaDeceso']
+            autor.imagen = formulario.cleaned_data['imagen']
+
+            autor.save()
+            
+            return redirect('listaAutores')
+    else:
+        formulario = AutorForm(instance=autor)
+    
+    return render(request, 'nuevoAutor.html', { 'formulario' : formulario })
+
+## Para eliminar un autor especifico
+def eliminarAutor(request, pk):
+    autor = get_object_or_404(Autor, pk = pk)
+
+    ### para eliminar la imagen de mi directorio
+    if os.path.isfile(autor.imagen.path):
+        os.remove(autor.imagen.path)
+    
+    autor.delete()
+    return redirect('listaAutores')
+"""
+
 ######################################################################################################################

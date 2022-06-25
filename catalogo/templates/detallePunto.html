@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if punto %}
+        <h1>Nombre: {{ punto.nombre }}</h1>
+
+    {% else %}
+        <h1>No hay nombre......</h1>
+    {% endif %}
+
+    <br> 
+    <ul>
+        <li>Latitud: {{ punto.latitude }} </li>
+        <li>Longitud: {{ punto.longitude }}</li>
+    </ul>
+
+    <br>
+    <a href="javascript: history.go(-1)">Volver pagina anterior</a>  
+    <br>
+{% endblock %}

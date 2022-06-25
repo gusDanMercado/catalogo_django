@@ -129,6 +129,13 @@ class Ejemplar(models.Model):
 
 ## Definimos un modelo para mostrar el Mapa:
 class POI(models.Model):
+    ##nombre = models.CharField(max_length=255)
+    ##lng = models.FloatField()
+    ##lat = models.FloatField()
+
     nombre = models.CharField(max_length=255)
-    lng = models.FloatField()
-    lat = models.FloatField()
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+
+    def __str__(self):
+        return '%s, %s, %s'%(self.nombre, self.latitude, self.longitude)
