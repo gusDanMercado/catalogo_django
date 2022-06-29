@@ -23,6 +23,7 @@ urlpatterns = [
     path('autores/nuevo', views.nuevoAutor, name='nuevoAutor'),
     path('autores/actualizar/<pk>', views.actualizarAutor, name='actualizarAutor'),
     path('autores/eliminar/<pk>', views.eliminarAutor, name='eliminarAutor'),
+    path('autores/reporte', views.AutorReport, name='AutorReport'),    
 
     path('libros', views.listaLibros.as_view(), name='listaLibros'),
     path('libros/detalle/<pk>', views.detalleLibro.as_view(), name='detalleLibro'),

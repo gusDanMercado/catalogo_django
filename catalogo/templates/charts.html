@@ -20,8 +20,8 @@
             data: {
             datasets: [{
                 data: {{ data|safe }},
-                backgroundColor: ['#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3', '#7D888F','#B9C5CD','#769FB9','#C7874D','#F57E12','#DDE13B','#01CAB0'],
-                label: 'Préstamos__'
+                backgroundColor: ['#E83927', '#30E827', '#275FE8', '#F7DC6F', '#B027E8', '##F39C12','#B9C5CD','#769FB9','#C7874D','#F57E12','#DDE13B','#01CAB0'],
+                label: 'Préstamos'
             }],
             labels: {{ labels|safe }}
             },
@@ -32,7 +32,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Préstamos Pie Chart'
+                    text: 'Cantidad de Ejemplares Disponibles de cada Libro'
                 }
             }
         };
@@ -56,8 +56,8 @@
                         data: {
                             labels: {{ labels | safe }},
                             datasets: [{
-                                label: 'Préstamos_',
-                                backgroundColor: '#DDE8EF',
+                                label: 'Ejemplares disponibles',
+                                backgroundColor: ['#E83927', '#30E827', '#275FE8', '#F7DC6F', '#B027E8', '##F39C12','#B9C5CD','#769FB9','#C7874D','#F57E12','#DDE13B','#01CAB0'],
                                 data: {{ data | safe }}
                             }] 
                         },
@@ -68,7 +68,7 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Préstamos Bar Chart'
+                                text: 'Ejemplares'
                             }
                         }
                     });

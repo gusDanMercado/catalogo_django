@@ -325,7 +325,7 @@ class detalleLibro(generic.DetailView):
         try:
             libro = Libro.objects.get(pk = pk)
         except Libro.DoesNotExist:
-            raise Http404("Ooops! El Autor no existe")
+            raise Http404("Ooops! El Libro no existe")
         
         context = {
             'libro' : libro
@@ -349,10 +349,9 @@ def nuevoLibro(request):
             libro.imagen = formulario.cleaned_data['imagen']
 
             #print("La ruta de mi imagen es: ", libro.imagen.path)
-
             libro.save()
-
             ## para solucionar esto realizamos (el tema de genero):
+            
             for genero in formulario.cleaned_data['genero']:
                 #print(genero)
                 if genero!=None:
@@ -405,7 +404,7 @@ def actualizarLibro(request, pk):
 def eliminarLibro(request, pk):
     libro = get_object_or_404(Libro, pk = pk)
 
-    print("La direccion de la imagen es: ",libro.imagen.path)
+    #print("La direccion de la imagen es: ",libro.imagen.path)
 
     ### para eliminar la imagen de mi directorio
     if os.path.isfile(libro.imagen.path) and os.path.dirname(libro.imagen.path)!='E:\DesarrolloWeb2022\Django\Proyecto2\media\img':
@@ -422,7 +421,7 @@ def eliminarLibro(request, pk):
 class listaEjemplares(generic.ListView):
     model = Ejemplar
     context_object_name = 'ejemplares'
-    paginate_by = 2
+    paginate_by = 5
     template_name = 'ejemplares.html'
 
 ## Para ver un ejemplar:
@@ -496,18 +495,20 @@ def eliminarEjemplar(request, pk):
 
 
 ####################################### GRAFICOS #####################################################################
-
 def chartData(request):
     chartLabel = "Prestamos"
-    etiquetas = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    meses = 12
-    minimo = 10
-    maximo = 100
-
+    etiquetas = []
+    #minimo = 10
+    #maximo = 100
     datos = []
 
-    for i in range(meses):
-        datos.append(randint(minimo, maximo))
+    libros = Libro.objects.all()
+
+    for libro in libros:
+        etiquetas.append(libro.titulo)
+        #ejemplares = Ejemplar.objects.filter(libro__pk=libro.pk).count()  ##cantidad de ejemplares de cada libro
+        ejemplares = Ejemplar.objects.filter(libro__pk=libro.pk).filter(estado__exact='d').count()  ##cantidad de ejemplares disponibles de cada libro
+        datos.append(ejemplares)
 
     context = {
         "labels":etiquetas,
@@ -516,7 +517,6 @@ def chartData(request):
     }
 
     return render(request, 'charts.html', context)
-
 
 ######################################################################################################################
 
@@ -540,5 +540,101 @@ class POIsMapView(TemplateView):
         context["markers"]= lista
 
         return context
- 
+         
+######################################################################################################################
+
+
+####################################### REPORTES #####################################################################
+####################################### AUTORES ######################################################################
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, landscape
+
+from reportlab.lib.pagesizes import A4
+from datetime import date
+from django.core import serializers
+
+from reportlab.lib.utils import ImageReader
+
+def AutorReport(request):
+    today = date.today().strftime('%Y-%m-%d')
+    buffer = io.BytesIO()
+    report = canvas.Canvas(buffer, pagesize=A4)
+
+    data = Autor.objects.all()  ## modelo Autor
+    print("Los autores cargados son: ",data)
+
+    report.setFont('Helvetica',15, leading=None)
+    report.setFillColorRGB(0,0,0)  ##color
+    report.drawString(260,800,'Catalogo de Autores')
+    report.line(100,780,500,780)  #0,780,1000,780  100,780,500,780
+
+    x1=20
+    y1=750
+    counter = 0
+
+    object_list= serializers.serialize("python", data)
+    #print("mi object_list es: ",object_list)
+    #Esto nos muestra: #[{'model': 'catalogo.autor', 'pk': 11, 'fields': {'apenom': 'Jacob Kaplan Moss', 'fechaNac': datetime.date(1982, 7, 9), 'fechaDeceso': None, 'imagen': 'autores/autor2Django.jpg'}}, {'model': 'catalogo.autor', 'pk': 12, 'fields': {'apenom': 'Alan Bool', 'fechaNac': datetime.date(1958, 10, 15), 'fechaDeceso': datetime.date(1980, 1, 30), 'imagen': 'autores/George_Boole.jpg'}}, {'model': 'catalogo.autor', 'pk': 15, 'fields': {'apenom': 'Adrian Holovaty', 'fechaNac': datetime.date(1983, 2, 2), 'fechaDeceso': None, 'imagen': 'autores/fondo2.jpg'}}]
+    ##es un diccionario para poder todos los datos que tiene el modelo Libro
+
+    for object in object_list:
+        counter= counter + 1
+
+        for field_name, field_value in object['fields'].items():
+            if counter==1:  ## primera fila (etiquetas)
+                report.setFont("Times-Roman",12,leading=None)
+                report.drawString(x1+100,y1,field_name) 
+            else:  ## segunda fila en adelante (valores)
+                report.setFont("Helvetica",11,leading=None)
+                if field_name=='fechaNac' or field_name=='fechaDeceso':                        
+                    if field_value!=None:
+                        valor=str(field_value)
+                    else:
+                        valor='no posee'
+                else:
+                    valor=field_value   
+
+                if field_name == 'imagen':
+                    dirImg = 'E:/DesarrolloWeb2022/Django/Proyecto2/media/'+valor
+                    img = ImageReader(dirImg)
+                    report.drawImage(img, x1+100,y1, 30, 30)
+                else:
+                    report.drawString(x1+100,y1, valor)
+
+            x1 = x1 + 100   ##columnas eje horizontal
+        y1 = y1 - 40        ##filas eje vertical
+
+        x1=20
+        if counter == 1:   ## es para la primera fila (los valores)
+            for field_name, field_value in object['fields'].items():
+                report.setFont("Helvetica",11,leading=None)
+                if field_name=='fechaNac' or field_name=='fechaDeceso':
+                    if field_value!=None:
+                        valor=str(field_value)
+                    else:
+                        valor='no posee'
+                else:
+                    valor=field_value   
+
+                if field_name == 'imagen':
+                    dirImg = 'E:/DesarrolloWeb2022/Django/Proyecto2/media/'+valor
+                    img = ImageReader(dirImg)  
+
+                    report.drawImage(img, x1+100,y1, 30, 30)
+                else:
+                    report.drawString(x1+100,y1, valor)   
+                
+                x1 = x1 + 100
+            
+            y1 = y1 - 40  ##filas eje vertical
+            x1=20
+
+    report.setTitle(f'Autores: Reporte del {today}')
+    report.showPage()
+    report.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="reporte.pdf")
+
 ######################################################################################################################

@@ -15,10 +15,13 @@
     padding-bottom: 25px;
     background-color: aqua;
 }*/
+
 .sidebar-nav {
     margin-top: 40px;
 }
+
 .container-fluid {
+    /*background-color: blue;*/
     margin-top: 40px;
 }
 
@@ -36,13 +39,12 @@
 .contenedor {
     /*border: solid red 1px;*/
     width: 1000px; /*ancho*/
-    height: 400px;  /*altura*/
+    height: 500px;  /*altura  900px*/
 }
 
-
-table {
+.table {
     table-layout: fixed;
-    width: 250px;
+    width: 1000px;  /*250px*/
 }
 
 

@@ -1,10 +1,13 @@
 from audioop import reverse
 from cgitb import text
+from distutils.command.upload import upload
 from email.mime import image
 from email.policy import default
 from faulthandler import disable
 import uuid
 from django.db import models
+
+import os
 
 # Create your models here.
 
@@ -69,7 +72,7 @@ class Libro(models.Model):
 
     idioma = models.ForeignKey(Idioma, on_delete=models.SET_NULL, null=True) #aqui no hace falta el el vector de idioma ya que django lo hace automaticamente
     
-    imagen= models.ImageField(upload_to='aportadas', null=True, default='img/eliminar.png') ##  
+    imagen= models.ImageField(upload_to='portadas', null=True, default='img/noposee_portada.png') ##  
     ##upload_to='img' --> me indica que la imagen se va a guardar en la carpeta img, tambien me crea esta carpeta
 
     def __str__(self):
@@ -83,6 +86,13 @@ class Libro(models.Model):
         return ', '.join([genero.nombre for genero in self.genero.all()[:3]])
     
     muestra_genero.short_description = 'Genero/s' 
+
+    ##para mostrar nuestros registros ordenados al consultar el modelo utilizamos:
+    class Meta:
+        ordering = ["titulo"]  #ordering = ["fechaDevolucion"]
+
+        def __str__(self):
+            return '%s'%(self.titulo)  #, %s, %s, %s   , self.genero.nombre, self.autor, self.ISBN   , %s  , self.resumen
 
 class Ejemplar(models.Model):
     uniqueId = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID unico para este libro particular en toda la biblioteca...")
@@ -133,3 +143,23 @@ class POI(models.Model):
 
     def __str__(self):
         return '%s'%(self.nombre)
+    
+class Usuario(models.Model):
+    nombre = models.CharField("Nombre", max_length=25)
+    apellido = models.CharField("Apellido", max_length=25)
+    dni = models.CharField("DNI", max_length=8)
+    domicilio = models.CharField("Domicilio", max_length=80)  ## aqui es donde tengo que poner el punto del mapa
+    
+    def __str__(self):
+        return '%s %s'%(self.nombre, self.apellido)
+
+class Prestamo(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
+    ejemplar = models.ForeignKey(Ejemplar, on_delete=models.SET_NULL, null=True)
+    fechaPrestamo = models.DateField("Fecha de Prestamo" , null=True, blank=True)
+
+    class Meta:
+        ordering = ["usuario"]
+
+        def __str__(self):
+            return '%s %s %s'%(self.usuario.nombre, self.usuario.apellido, self.ejemplar.ISBN)    

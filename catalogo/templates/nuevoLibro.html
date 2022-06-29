@@ -5,7 +5,7 @@
 
     <h2>Nuevo Libro</h2>
     <br>
-    <form method="post" class="post-form" action="">{% csrf_token %}
+    <form method="post" class="post-form" action="" enctype="multipart/form-data">{% csrf_token %}
         <!-- {{ formulario.as_p }} el anterior muestra como parrafo -->
         {{ formulario | crispy }}
         <button type="submit" class="save btn btn-primary">Guardar</button>

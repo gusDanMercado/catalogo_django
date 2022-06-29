@@ -46,6 +46,8 @@
                     </li>
                 {% endfor %}            
             </ul>
+            <br>
+            Para Ver/Editar/Eliminar los ejemplares de este libro ir a: <strong></strong><a href="{% url 'listaEjemplares' %}">Ver ejemplares</a></strong>
         {% else %}
             <ul><p><strong>Ooops!!!, No tenemos ejemplares de este libro en este catalogo.</strong></p></ul>
         {% endif %}
