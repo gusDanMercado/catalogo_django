@@ -27,6 +27,9 @@ class Autor(models.Model):
     def get_absolute_url(self):
         return reverse('autorInfo', args=[str(self.apenom)])
 
+    class Meta:
+        ordering = ["apenom"]  #ordering = ["fechaDevolucion"]
+
 class Genero(models.Model):
     nombre = models.CharField(max_length=60, help_text="Ingrese el nombre del nuevo Genero (por ejemplo. Programacion, BD, SO, etc.)")
 
@@ -139,3 +142,49 @@ class POI(models.Model):
 
     def __str__(self):
         return '%s, %s, %s'%(self.nombre, self.latitude, self.longitude)
+
+"""
+import requests
+from django.conf import settings
+from django.http import HttpResponse
+
+class BaseJasperReport(object):
+    report_name = ''
+    filename = ''
+
+    def __init__(self):
+        #self.auth = (settings.JASPER_USER, settings.JASPER_PASSWORD)
+        super(BaseJasperReport, self).__init__()
+
+    def get_report(self):
+        #url = '{url}/rest_v2/reports/{report_name}.pdf'.format(url=settings.JASPER_URL, report_name=self.report_name)
+        #url = 'http://127.0.0.1:8000/catalogo/autores/reporte/{report_name}.pdf'.format(url=settings.JASPER_URL, report_name=self.report_name)
+        url = 'http://127.0.0.1:8000/catalogo/autores/reporte/{report_name}.pdf'  #.format(url=settings.JASPER_URL, report_name=self.report_name)
+        req = requests.get(url, params=self.get_params()) ##, auth=self.auth
+        return req.content
+
+    def get_params(self):
+        ##Este metodo sera implementado por cada uno de nuestros reportes
+        raise NotImplementedError
+
+    def render_to_response(self):
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="{}.pdf"'.format(self.filename)
+        response.write(self.get_report())
+        return response
+
+
+class ScoresReport(BaseJasperReport):
+
+    report_name = 'reporteAutores'
+
+    def __init__(self, Autor):
+        self.autor = Autor
+        self.filename = 'scores_report_for_{}'.format(self.autor)
+        super(ScoresReport, self).__init__()
+
+    def get_params(self):
+        return {
+            'autor': self.autor
+        }
+"""

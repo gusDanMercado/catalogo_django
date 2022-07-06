@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalogo',
     'crispy_forms',
+    #'core',
     #'django.contrib.gis',  ##para trabajar con Mapas (en este caso no hace falta poner esto porque igual funciona)
 ]
 
@@ -146,3 +147,10 @@ MEDIA_ROOT --> es la ruta absoluta, esta ruta se utiliza para recuperar archivos
 
 #GOOGLE_MAPS_API_KEY = 'your-key-goes-here'  ## para trabajar con Google Maps
 #### Para trabajar con esto hay que crearce credenciales y todo en google Maps y es todo un kilombo (No vale la pena hacerlo, hay otras formas de hacerlo usando JS)
+
+
+
+## para trabajar con Jasper:
+JASPER_URL = '@http://localhost:8080/pyJasper/jasper.py@' ##'jdbc:sqlite:E:/DesarrolloWeb2022/Django/Proyecto2/db.sqlite3'  #'http://192.168.1.100'  # url donde esté corriendo jasper server
+JASPER_USER = ''
+JASPER_PASSWORD = ''

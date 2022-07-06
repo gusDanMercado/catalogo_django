@@ -40,11 +40,10 @@
 }
 
 
-table {
+.table {
     table-layout: fixed;
     width: 250px;
 }
-
 
 .col {
     width: 100px;
@@ -55,3 +54,18 @@ table {
 .nuevoRegistro {
     margin-left: 850px;
 }
+
+/*
+.tabla_reporte {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid black;
+}
+#tabla_reporte thead tr th {
+    text-align: left;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    padding-top: 4px;
+}
+*/

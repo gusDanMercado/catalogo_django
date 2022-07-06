@@ -29,22 +29,6 @@ class AutorForm(forms.ModelForm):
             'fechaNac' : NumberInput(attrs={ 'type' : 'date' }),
             'fechaDeceso' : NumberInput(attrs={ 'type' : 'date' }),            
         }
-    
-    ### Para validar formularios utilizaremos la funcion clean, al cual mostrara mensajes de error en la vista correspondiente
-    def clean(self):
-        super(AutorForm, self).clean()
-        fechaNac = self.cleaned_data['fechaNac']
-        fechaDeceso = self.cleaned_data['fechaDeceso']
-        apenom = self.cleaned_data['apenom']
-
-        if fechaNac!='' and fechaDeceso!='':
-            if fechaDeceso < fechaNac:
-                self.errors['fechaDeceso'] = self.error_class(['La fecha de deceso debe ser mayor a la de nacimiento'])
-        
-        if len(apenom)<3:
-            self.errors['apenom'] = self.error_class(['El apellido debe tener al menos 3 caracteres!!!'])
-
-        return self.cleaned_data
 
 class LibroForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

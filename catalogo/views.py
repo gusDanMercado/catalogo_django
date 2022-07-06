@@ -2,14 +2,19 @@ from asyncio.windows_events import NULL
 from enum import auto
 from logging import raiseExceptions
 from multiprocessing import context
+from pickle import UNICODE
 from select import select
+from urllib import response
+from xml.dom import xmlbuilder
+from django import views
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from catalogo.models import Autor, Genero, Idioma, Libro, Ejemplar, POI
 
-from django.views import generic
+from django.views import View, generic
 from catalogo.forms import GeneroForm, IdiomaForm, AutorForm, LibroForm, crearEjemplarForm, editarEjemplarForm, EjemplarForm
 
-from django.http import Http404
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 
 import os
 
@@ -575,7 +580,52 @@ class listaPuntos_2(generic.ListView):
     template_name = 'showroute.html' ##'puntos.html'
 
 
+### reportes:
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.template import Context
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
+class PDFAutores(View):
+
+    def get(self, request, *args, **kwargs):
+
+        try:
+            template = get_template('reporteautores.html')
+
+            context = {
+                'title' : 'Lista de Autores',
+                'autores' : Autor.objects.all(),
+                'totalAut' : Autor.objects.count(),
+                'title2' : 'Lista de Libros',
+                'libros' : Libro.objects.all(),
+                'totalLib' : Libro.objects.count(),
+                'title3' : 'Lista de Ejemplares',
+                'ejemplares' : Ejemplar.objects.all(), 
+                'cantEjemplarDisponibles' : Ejemplar.objects.filter(estado__exact='d').count(),
+                'cantEjemplarPrestados' : Ejemplar.objects.filter(estado__exact='p').count(),
+                'cantEjemplarMant' : Ejemplar.objects.filter(estado__exact='m').count(),
+                'cantEjemplarReserv' : Ejemplar.objects.filter(estado__exact='r').count(),
+                'totalEje' : Ejemplar.objects.count()
+            }
+
+            html = template.render(context)
+
+            response = HttpResponse() ##context_type = 'application/pdf'
+            response['Content-Disposition'] = 'attachment; filename="autores.pdf"'  ##   esta opcion hace que se me descarge el archivo
+
+            ##creamos el pdf:
+            pisaStatus = pisa.CreatePDF(
+                html, dest=response
+            )
+
+            return response
+        except:
+            pass
+        
+        return HttpResponseRedirect(reverse_lazy('listaAutores'))  ##si llega a haber un error no me genera el pdf y se vuelve a la lista de autores
 
 """
 ## Para crear un nuevo punto:
@@ -632,3 +682,69 @@ def eliminarAutor(request, pk):
 """
 
 ######################################################################################################################
+
+
+
+"""
+from django.views.generic import View
+from catalogo.models import ScoresReport
+
+class reporteAutores(View):
+	
+    def get(self, request, *args, **kwargs):
+    	# debemos obtener nuestro objeto classroom haciendo la consulta a la base de datos
+        report = ScoresReport(Autor)
+        return report.render_to_response()
+
+## trabajando con reportes:
+import os
+from io import StringIO
+import pyjasper #pyjasper
+
+class reporteAutores():
+    def compiling():
+        input_file = 'C:\\Users\\gust\\OneDrive\\Documents\\detalleFinal\\ejemploDjango.jrxml'  
+        jasper = pyjasper.JasperPy  #.JasperPy()
+        jasper.compile(input_file)
+        print("mi jasper es: ", jasper)
+
+    def processing():
+        input_file = 'C:\\Users\\gust\\OneDrive\\Documents\\detalleFinal\\ejemploDjango.jrxml'
+        output = 'C:/Users/gust/Downloads' 
+        jasper = pyjasper.JasperPy
+        jasper.process(input_file, output=output, format_list=["pdf", "rtf"])
+        print("Mi jasper proceso es: ",jasper)
+
+    compiling
+    processing
+"""
+# C:\Users\gust\OneDrive\Documents\detalleFinal\ejemploDjango.jasper   C:\Users\gust\OneDrive\Documents\detalleFinal
+
+#'/examples/hello_world.jrxml'
+#os.path.dirname(os.path.abspath(__file__)) + '/output/examples'
+
+"""
+from pyjasper import JasperGenerator
+import xml.etree.ElementTree as ET
+from xml.etree.ElementTree import tostring, fromstring
+
+class reporteAutores(JasperGenerator):
+    def __init__(self):
+        super(self).__init__()
+        self.reportname = 'C:/Users/gust/OneDrive/Documents/detalleFinal/ejemploDjango.jrxml' #'reports/Greeting.jrxml'
+        self.xpath = '/autores/autores'
+        self.root = ET.Element('autores')
+    
+    def generate_xml(self, tobegreeted):
+        ET.SubElement(self.root, 'generator').text = '__revision__'
+
+        for name in tobegreeted:
+            xml_autores = ET.SubElement(self.root, 'autores')
+            ET.SubElement(xml_autores, "autores_to").text = UNICODE(name)
+            ET.SubElement(xml_autores, "autores_from").text = u"Max"
+        return xmroot
+    
+    generator = reporteAutores()
+    pdf = generator.generate(['nik', 'tobias', 'chris', 'daniel'])
+    open('/tmp/greetingcard.pdf', 'w').write(pdf)    
+"""

@@ -24,6 +24,9 @@ urlpatterns = [
     path('autores/actualizar/<pk>', views.actualizarAutor, name='actualizarAutor'),
     path('autores/eliminar/<pk>', views.eliminarAutor, name='eliminarAutor'),
 
+    ##reporte de autores:
+    path('autores/reporte', views.PDFAutores.as_view(), name='reporteAutores'),
+
     path('libros', views.listaLibros.as_view(), name='listaLibros'),
     path('libros/detalle/<pk>', views.detalleLibro.as_view(), name='detalleLibro'),
     path('libros/nuevo', views.nuevoLibro, name='nuevoLibro'),
@@ -41,6 +44,8 @@ urlpatterns = [
 
     path('puntos', views.listaPuntos.as_view(), name='listaPuntos'),
     path('puntos/detalle/<pk>', views.detallePunto.as_view(), name='detallePunto'),
+
+
     
     ##path('puntos/lat/long', views.listaPuntos.as_view(),name='showroute'),
     #path('puntos', views.listaPuntos.as_view(), name='showmap'),
