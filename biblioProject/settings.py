@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalogo',
     'crispy_forms',
+    'leaflet',
     #'core',
     #'django.contrib.gis',  ##para trabajar con Mapas (en este caso no hace falta poner esto porque igual funciona)
 ]
@@ -151,6 +152,8 @@ MEDIA_ROOT --> es la ruta absoluta, esta ruta se utiliza para recuperar archivos
 
 
 ## para trabajar con Jasper:
-JASPER_URL = '@http://localhost:8080/pyJasper/jasper.py@' ##'jdbc:sqlite:E:/DesarrolloWeb2022/Django/Proyecto2/db.sqlite3'  #'http://192.168.1.100'  # url donde esté corriendo jasper server
-JASPER_USER = ''
-JASPER_PASSWORD = ''
+#JASPER_URL = '@http://localhost:8080/pyJasper/jasper.py@' ##'jdbc:sqlite:E:/DesarrolloWeb2022/Django/Proyecto2/db.sqlite3'  #'http://192.168.1.100'  # url donde esté corriendo jasper server
+#JASPER_USER = ''
+#JASPER_PASSWORD = ''
+
+#GDAL_LIBRARY_PATH = 'C:\\Users\\gust\\Downloads\\gdal-3.5.1'

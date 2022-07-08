@@ -3,6 +3,7 @@ from cgitb import text
 from email.mime import image
 from email.policy import default
 from faulthandler import disable
+from tkinter.tix import Tree
 import uuid
 from django.db import models
 
@@ -142,6 +143,15 @@ class POI(models.Model):
 
     def __str__(self):
         return '%s, %s, %s'%(self.nombre, self.latitude, self.longitude)
+
+## localidades:
+from djgeojson.fields import PointField
+
+class ubicacion(models.Model):
+    nombre = models.CharField(max_length=255)
+    geom = PointField(null=True, blank=True)
+
+
 
 """
 import requests
