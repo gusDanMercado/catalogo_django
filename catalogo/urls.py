@@ -4,6 +4,7 @@ from catalogo import views
 
 urlpatterns = [
     path('', views.index, name='index'),  ##para la pagina principal (Home)
+    path('reporte', views.PDFreporte.as_view(), name="PDFreporte"),
 
     #path('generos', views.listaGeneros, name='listaGeneros'),  ##para la pagina de generos
     path('generos', views.listaGeneros.as_view(), name='listaGeneros'),  ##usando la clase ListView
@@ -45,7 +46,7 @@ urlpatterns = [
     path('usuarios/nuevo', views.crearUsuario, name='crearUsuario'),
     path('usuarios/actualizar/<pk>', views.actualizarUsuario, name='actualizarUsuario'),
     path('usuarios/eliminar/<pk>', views.eliminarUsuario, name='eliminarUsuario'),
-
+    
     #path('usuario', views.crearUsuario.as_view(), name='crearUsuario'),
     
     ##path('puntos/lat/long', views.listaPuntos.as_view(),name='showroute'),

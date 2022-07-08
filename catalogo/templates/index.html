@@ -5,7 +5,7 @@
 
     <p>Bienvenidos a <em>Catalogo</em>, una aplicación web desarrollada en Django</p>
 
-    <h2>Contenido Dinámico</h2>
+    <h2>Contenido</h2>
 
     <p>Nuestro catalogo se forma de: </p>
 
@@ -14,6 +14,10 @@
         <li><strong>Libros: </strong>{{ nroLibros }}</li>
         <li><strong>Ejemplares: </strong>{{ nroEjemplares }}</li>
         <li><strong>Disponibles: </strong>{{ nroDisponibles }}</li>
+        
+        <div class="col-sm-4 float-right">
+            <a href="{% url 'PDFreporte' %}"><a href="{% url 'PDFreporte' %}"><img src="/media/img/imprimir.png" width="50" alt="icono" title="Reporte"></a></a>
+        </div>
     </ul>
 
     <!--

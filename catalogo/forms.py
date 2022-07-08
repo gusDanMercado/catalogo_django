@@ -1,6 +1,7 @@
 from cProfile import label
 from dataclasses import field, fields
 from email.mime import image
+from enum import unique
 from faulthandler import disable
 from msilib.schema import CheckBox
 from pyexpat import model
@@ -115,6 +116,13 @@ class EjemplarForm(forms.ModelForm):
 
 class UsuarioForm(forms.ModelForm): ## para ver el usuario   
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        if email and User.objects.filter(email=email).exclude(username=username).exists():
+            raise forms.ValidationError('El email debe ser unico.')
+        return email
+
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email',)  ##estos son los campos que me interesan del usuario (asi figuran en la base de datos)
@@ -130,6 +138,13 @@ class UsuarioForm(forms.ModelForm): ## para ver el usuario
 class UsuarioForm2(UserCreationForm): ##  para crear el usuario, tuve que usar UserCreationForm ya que este me ayuda automanticamente con la contraseña
     #password1 = forms.CharField(label='Contraseña', help_text="<ul><li>Su contraseña no puede ser demasiado similar a su otra información personal.</li> <li>Su contraseña debe contener al menos 8 caracteres.</li> <li>Su contraseña no puede ser una contraseña de uso común.</li> <li>Su contraseña no puede ser completamente numérica.</li></ul>")
     password2 = forms.CharField(label='Confirme contraseña', help_text="Ingrese la misma contraseña que antes, para verificación.", widget=forms.PasswordInput) # 
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        if email and User.objects.filter(email=email).exclude(username=username).exists():
+            raise forms.ValidationError('El email debe ser unico.')
+        return email
 
     class Meta:
         model = User

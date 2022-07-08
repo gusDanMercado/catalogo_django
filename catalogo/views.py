@@ -643,6 +643,7 @@ class POIsMapView(TemplateView):
 
 
 ####################################### REPORTES #####################################################################
+
 ####################################### AUTORES ######################################################################
 import io
 from django.http import FileResponse
@@ -734,5 +735,61 @@ def AutorReport(request):
     report.save()
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename="reporte.pdf")
+
+######################################################################################################################
+
+####################################### GENERICO #####################################################################
+
+import os
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import Context
+from django.template.loader import get_template
+from django.views import View
+from xhtml2pdf import pisa
+
+class PDFreporte(View):
+
+    def get(self, request, *args, **kwargs):
+
+        try:
+            template = get_template('reporteGeneral.html')
+
+            context = {
+                'title' : 'Lista de Autores',
+                'autores' : Autor.objects.all(),
+                'totalAut' : Autor.objects.count(),
+                'title2' : 'Lista de Libros',
+                'libros' : Libro.objects.all(),
+                'totalLib' : Libro.objects.count(),
+                'title3' : 'Lista de Ejemplares',
+                'ejemplares' : Ejemplar.objects.all(), 
+                'cantEjemplarDisponibles' : Ejemplar.objects.filter(estado__exact='d').count(),
+                'cantEjemplarPrestados' : Ejemplar.objects.filter(estado__exact='p').count(),
+                'cantEjemplarMant' : Ejemplar.objects.filter(estado__exact='m').count(),
+                'cantEjemplarReserv' : Ejemplar.objects.filter(estado__exact='r').count(),
+                'totalEje' : Ejemplar.objects.count(),
+                'title4' : 'Lista de Usuarios',
+                'usuarios' : User.objects.all().filter(groups__name='usuarios_catalogo').order_by('username'),
+                'totalUsu' : User.objects.filter(groups__name='usuarios_catalogo').count()
+            }
+
+            html = template.render(context)
+
+            response = HttpResponse() ##context_type = 'application/pdf'
+            response['Content-Disposition'] = 'attachment; filename="reporteGeneral.pdf"'  ##   esta opcion hace que se me descarge el archivo
+
+            ##creamos el pdf:
+            pisaStatus = pisa.CreatePDF(
+                html, dest=response
+            )
+
+            return response
+        except:
+            pass
+        
+        return HttpResponseRedirect(reverse_lazy('index'))  ##si llega a haber un error no me genera el pdf y se vuelve a la lista de autores
+
+######################################################################################################################
 
 ######################################################################################################################
