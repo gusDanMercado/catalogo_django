@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('catalogo/admin/', admin.site.urls),
     path('catalogo/', include('catalogo.urls')),  #home
+    #path('usuarios/', include('django.contrib.auth.urls')), ##para trabajar con usuarios
 ]
 
 ##para trabajar con imagenes:  (me falta prfundizar mas este tema)

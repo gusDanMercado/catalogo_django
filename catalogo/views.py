@@ -1,9 +1,14 @@
 from asyncio.windows_events import NULL
+from email.headerregistry import Group
 from enum import auto
 from logging import raiseExceptions
 from multiprocessing import context
+from pyexpat import model
 from select import select
+from unicodedata import name
+from urllib import request
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from catalogo.models import Autor, Genero, Idioma, Libro, Ejemplar, POI
 
 from django.views import generic
@@ -462,7 +467,7 @@ def nuevoEjemplar(request):
     
     return render(request, 'nuevoEjemplar.html', { 'formulario' : formulario })
 
-## Para actualizar un libro: 
+## Para actualizar un ejemplar: 
 def actualizarEjemplar(request, pk):
     ejemplar = get_object_or_404(Ejemplar, pk = pk)
 
@@ -491,6 +496,99 @@ def eliminarEjemplar(request, pk):
     ejemplar.delete()
     return redirect('listaEjemplares')
 
+######################################################################################################################
+
+
+####################################### USUARIOS #####################################################################
+## Vamos a utilizar el modelo User que ya viene por defecto en Django y a es modelo le vamos a agregar campos que me 
+## hacen falta
+
+from django.contrib.auth.models import User, Group
+from catalogo.forms import UsuarioForm, UsuarioForm2
+
+## Para ver todos los usuarios:
+class listaUsuarios(generic.ListView):    
+    model = User #.objects.filter(groups__name='usuarios_catalogo')   ##me tira error ya que tengo que definir el queryset
+
+    ordering = ['username']
+
+    def get_queryset(self):
+        return super().get_queryset().filter(groups__name='usuarios_catalogo')
+    
+    context_object_name = 'usuarios'
+    paginate_by = 5
+    template_name = 'usuario/usuarios.html'
+
+## Para ver un usuario:
+class detalleUsuario(generic.DetailView):
+    model = User
+    #print("estoy aqui 1232132132123", model.objects.values_list())
+    template_name = 'usuario/detalleUsuario.html'
+
+    def user_detalle_view(request, pk):
+        try:
+            usuario = User.objects.get(pk = pk)
+        except User.DoesNotExist:
+            raise Http404("Ooops! El Usuario no existe")
+        
+        context = {
+            'usuario' : usuario
+        }
+
+        return render(request, 'detalleUsuario.html', context)
+
+## Para crear un nuevo Usuario:
+def crearUsuario(request):
+    if request.method == "POST":
+        formulario = UsuarioForm2(request.POST)  #crear
+        print("El formulario es: ", formulario)
+        if formulario.is_valid():
+            usuario = formulario.save(commit=False)
+     
+            usuario.username = formulario.cleaned_data['username']
+            usuario.first_name = formulario.cleaned_data['first_name']
+            usuario.last_name = formulario.cleaned_data['last_name']
+            usuario.email = formulario.cleaned_data['email']
+
+            usuario.save()
+
+            ##agregamos este usuario a un grupo: (esto se hace asi porque estos usuarios solo van a tener determinados permisos, el cual se los va a dar el admin)
+            group = Group.objects.get(name='usuarios_catalogo')
+            usuario.groups.add(group)
+
+            return redirect('listaUsuarios')
+    else:
+        formulario = UsuarioForm2()  
+    
+    return render(request, 'usuario/crearUsuario.html', { 'formulario' : formulario })
+
+## Para actualizar un usuario: 
+def actualizarUsuario(request, pk):
+    usuario = get_object_or_404(User, pk = pk)
+
+    if request.method == "POST":
+        formulario = UsuarioForm(request.POST, instance=usuario)  
+
+        if formulario.is_valid():
+
+            usuario.username = formulario.cleaned_data['username']
+            usuario.first_name = formulario.cleaned_data['first_name']
+            usuario.last_name = formulario.cleaned_data['last_name']
+            usuario.email = formulario.cleaned_data['email']
+
+            usuario.save()
+            
+            return redirect('listaUsuarios')
+    else:
+        formulario = UsuarioForm(instance=usuario) 
+    
+    return render(request, 'usuario/crearUsuario.html', { 'formulario' : formulario })
+
+## Para eliminar un usuario especifico
+def eliminarUsuario(request, pk):
+    usuario = get_object_or_404(User, pk = pk)
+    usuario.delete()
+    return redirect('listaUsuarios')
 ######################################################################################################################
 
 

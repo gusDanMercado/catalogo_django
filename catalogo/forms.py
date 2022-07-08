@@ -9,6 +9,11 @@ from django import forms
 from catalogo.models import Ejemplar, Genero, Idioma, Autor, Libro
 from django.forms.widgets import NumberInput
 
+###### para trabajar con el modelo User
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+########################################################
+
 class GeneroForm(forms.ModelForm):
     class Meta:
         model = Genero
@@ -105,4 +110,38 @@ class EjemplarForm(forms.ModelForm):
         
         widgets = {
             'fechaDevolucion' : NumberInput(attrs={ 'type' : 'date' }),
+        }
+
+
+class UsuarioForm(forms.ModelForm): ## para ver el usuario   
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email',)  ##estos son los campos que me interesan del usuario (asi figuran en la base de datos)
+
+        ##como yo quiero que los muestre de otra manera en los formularios utilizamos los labels:
+        labels = {
+            'username' : 'Nombre de Usuario', 
+            'first_name' : 'Nombres', 
+            'last_name' : 'Apellido', 
+            'email' : 'Correo',
+        }
+
+class UsuarioForm2(UserCreationForm): ##  para crear el usuario, tuve que usar UserCreationForm ya que este me ayuda automanticamente con la contraseña
+    #password1 = forms.CharField(label='Contraseña', help_text="<ul><li>Su contraseña no puede ser demasiado similar a su otra información personal.</li> <li>Su contraseña debe contener al menos 8 caracteres.</li> <li>Su contraseña no puede ser una contraseña de uso común.</li> <li>Su contraseña no puede ser completamente numérica.</li></ul>")
+    password2 = forms.CharField(label='Confirme contraseña', help_text="Ingrese la misma contraseña que antes, para verificación.", widget=forms.PasswordInput) # 
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')  ##  estos son los campos que me interesan del usuario (asi figuran en la base de datos)
+        ## estos password1 y password2 lo obtuve inspeccionando la pagina desde el navegador
+
+        ##como yo quiero que los muestre de otra manera en los formularios utilizamos los labels:
+        labels = {
+            'username' : 'Nombre de Usuario', 
+            'first_name' : 'Nombres', 
+            'last_name' : 'Apellido', 
+            'email' : 'Correo',
+            #'password1': 'Contraseña',  ##aqui no se porque no me funciono con esto
+            #'password2': 'Confirme contraseña'  ##aqui no se porque no me funciono con esto
         }

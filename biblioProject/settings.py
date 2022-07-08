@@ -141,3 +141,17 @@ MEDIA_ROOT --> es la ruta absoluta, esta ruta se utiliza para recuperar archivos
     BASE_DIR --> apunta a la jerarquia superior del proyecto (la raiz), es decir, mi sitio. Si queremos usarlo tendremos que 
     usar el metodo "os" proporcionado por python.
 """
+
+"""
+Para traducir al español los nombres que le pusimos a nuestros campos del modelo (si es que lo pusimos en ingles) y 
+mensajes de error (estan en ingles por defecto (por lo menos es asi con el campo password del modelo User que viene por defecto))
+
+en el caso de que no nos guste la traduccion la modificamos en form realizando por ejemplo:
+    password1 = forms.CharField(label='Contraseña', help_text="<ul><li>Su contraseña no puede ser demasiado similar a su otra información personal.</li> <li>Su contraseña debe contener al menos 8 caracteres.</li> <li>Su contraseña no puede ser una contraseña de uso común.</li> <li>Su contraseña no puede ser completamente numérica.</li></ul>")
+    password2 = forms.CharField(label='Confirme contraseña', help_text="Ingrese la misma contraseña que antes, para verificación.", widget=forms.PasswordInput) # 
+
+Nota: tambien te pone el admin en español (creo que te pone todo en español)
+"""
+LANGUAGE_CODE = 'es'
+TIME_ZONE = 'America/Lima'
+USE_I18N = True

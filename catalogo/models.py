@@ -30,6 +30,9 @@ class Autor(models.Model):
     def get_absolute_url(self):
         return reverse('autorInfo', args=[str(self.apenom)])
 
+    class Meta:
+        ordering = ["apenom"] 
+
 class Genero(models.Model):
     nombre = models.CharField(max_length=60, help_text="Ingrese el nombre del nuevo Genero (por ejemplo. Programacion, BD, SO, etc.)")
 
@@ -38,6 +41,9 @@ class Genero(models.Model):
 
     def __str__(self):
         return '%s '%(self.nombre)
+
+    class Meta:
+        ordering = ["nombre"]    
 
 class Idioma(models.Model):
     nombre = models.CharField(max_length=25, help_text="Ingrese el nuevo Idioma (por ejemplo. Ingles, Español, etc.)")
@@ -136,6 +142,7 @@ class Ejemplar(models.Model):
 ##otra relacion que puede haber es: OneToOneField --> es para indicar la relacion de uno a uno
 
 ## Definimos un modelo para mostrar el Mapa:
+
 class POI(models.Model):
     nombre = models.CharField(max_length=255)
     lng = models.FloatField(null=True, blank=True)
@@ -143,23 +150,15 @@ class POI(models.Model):
 
     def __str__(self):
         return '%s'%(self.nombre)
-    
-class Usuario(models.Model):
-    nombre = models.CharField("Nombre", max_length=25)
-    apellido = models.CharField("Apellido", max_length=25)
-    dni = models.CharField("DNI", max_length=8)
-    domicilio = models.CharField("Domicilio", max_length=80)  ## aqui es donde tengo que poner el punto del mapa
-    
+
+
+### extendemos el modelo User que viene por defecto en Django para agregarle algunos campos
+
+from django.contrib.auth.models import User
+
+class Ubicacion(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, help_text="Ingrese el usuario")
+    poi = models.ForeignKey(POI, on_delete=models.SET_NULL, null=True, help_text="Ingrese direccion" )
+
     def __str__(self):
-        return '%s %s'%(self.nombre, self.apellido)
-
-class Prestamo(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
-    ejemplar = models.ForeignKey(Ejemplar, on_delete=models.SET_NULL, null=True)
-    fechaPrestamo = models.DateField("Fecha de Prestamo" , null=True, blank=True)
-
-    class Meta:
-        ordering = ["usuario"]
-
-        def __str__(self):
-            return '%s %s %s'%(self.usuario.nombre, self.usuario.apellido, self.ejemplar.ISBN)    
+        return '%s'%(self.usuario.username, self.poi.nombre)

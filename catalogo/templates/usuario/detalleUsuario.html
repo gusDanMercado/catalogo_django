@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Usuario: {{ user.username }}</h1>
+    <br> 
+    <ul>
+        <li>Nombre: {{ user.first_name }}</li>
+        <li>Apellido: {{ user.last_name }}</li>
+        <li>Email: {{ user.email }}</li>
+    </ul>
+
+    <br>
+    <a href="javascript: history.go(-1)">Volver pagina anterior</a>  
+    <br>
+{% endblock %}

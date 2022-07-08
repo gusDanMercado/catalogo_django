@@ -39,6 +39,14 @@ urlpatterns = [
 
     path('graficos', views.chartData, name='graficos'),
     path('map', views.POIsMapView.as_view(), name='mapa'),
+
+    path('usuarios', views.listaUsuarios.as_view(), name='listaUsuarios'),
+    path('usuarios/detalle/<pk>', views.detalleUsuario.as_view(), name='detalleUsuario'),
+    path('usuarios/nuevo', views.crearUsuario, name='crearUsuario'),
+    path('usuarios/actualizar/<pk>', views.actualizarUsuario, name='actualizarUsuario'),
+    path('usuarios/eliminar/<pk>', views.eliminarUsuario, name='eliminarUsuario'),
+
+    #path('usuario', views.crearUsuario.as_view(), name='crearUsuario'),
     
     ##path('puntos/lat/long', views.listaPuntos.as_view(),name='showroute'),
     #path('puntos', views.listaPuntos.as_view(), name='showmap'),

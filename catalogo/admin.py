@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 # Register your models here.
-from catalogo.models import Autor, Genero, Idioma, Libro, Ejemplar, POI
+from catalogo.models import Autor, Genero, Idioma, Libro, Ejemplar, POI, Ubicacion
 
 ## para trabajar con mapas:
 ##from django.conf import settings
@@ -32,7 +32,10 @@ class EjemplarAdmin(admin.ModelAdmin):
     list_filter = (('ISBN', 'estado','fechaDevolucion'))  #son los filtros que va a mostrar al lado derecho del sitio de administracion de Django
 
 class POIAdmin(admin.ModelAdmin):
-    list_display = ('nombre','lng', 'lat')  
+    list_display = ('nombre', 'lng', 'lat')
+
+class UbicacionAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'poi')
 
 admin.site.register(Autor, AutorAdmin)
 admin.site.register(Genero, GeneroAdmin)
@@ -40,3 +43,4 @@ admin.site.register(Idioma, IdiomaAdmin)
 admin.site.register(Libro, LibroAdmin)
 admin.site.register(Ejemplar, EjemplarAdmin)
 admin.site.register(POI, POIAdmin)
+admin.site.register(Ubicacion, UbicacionAdmin)
