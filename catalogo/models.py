@@ -151,9 +151,7 @@ class POI(models.Model):
     def __str__(self):
         return '%s'%(self.nombre)
 
-
 ### extendemos el modelo User que viene por defecto en Django para agregarle algunos campos
-
 from django.contrib.auth.models import User
 
 class Ubicacion(models.Model):
@@ -161,4 +159,4 @@ class Ubicacion(models.Model):
     poi = models.ForeignKey(POI, on_delete=models.SET_NULL, null=True, help_text="Ingrese direccion" )
 
     def __str__(self):
-        return '%s'%(self.usuario.username, self.poi.nombre)
+        return '%s, %s'%(self.usuario.username, self.poi.nombre)
